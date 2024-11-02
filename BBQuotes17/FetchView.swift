@@ -1,5 +1,5 @@
 //
-//  QuoteView.swift
+//  FetchView.swift
 //  BBQuotes17
 //
 //  Created by Weerawut Chaiyasomboon on 31/10/2567 BE.
@@ -12,6 +12,7 @@ struct FetchView: View {
     let show: String
     
     @State private var showCharacterInfo = false
+    @State private var showRandomCharacterInfo = false
     
     var body: some View {
         GeometryReader{ geo in
@@ -27,61 +28,84 @@ struct FetchView: View {
                         switch vm.status {
                         case .notStarted:
                             EmptyView()
+                            
                         case .fetching:
                             ProgressView()
                                 .controlSize(.extraLarge)
-                        case .success:
-                            Text("\"\(vm.quote.quote)\"")
-                                .minimumScaleFactor(0.5)
-                                .multilineTextAlignment(.center)
-                                .foregroundStyle(.white)
-                                .padding()
-                                .background(.black.opacity(0.5))
-                                .clipShape(.rect(cornerRadius: 25))
-                                .padding(.horizontal)
                             
-                            ZStack(alignment: .bottom) {
-                                AsyncImage(url: vm.character.images[0]) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFill()
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .frame(width: geo.size.width/1.1, height: geo.size.height/1.8)
-                                
-                                Text(vm.quote.character)
-                                    .foregroundStyle(.white)
-                                    .padding(10)
-                                    .frame(maxWidth: .infinity)
-                                    .background(.ultraThinMaterial)
-                            }
-                            .frame(width: geo.size.width/1.1, height: geo.size.height/1.8)
-                            .clipShape(.rect(cornerRadius: 50))
-                            .onTapGesture {
-                                showCharacterInfo.toggle()
-                            }
+                        case .successQuote:
+                            QuoteView(vm: vm, width: geo.size.width, height: geo.size.height, showCharacterInfo: $showCharacterInfo)
+                            
+                        case .successEpisode:
+                            EpisodeView(episode: vm.episode)
+                            
+                        case .successRandomCharacter:
+                            RandomCharacterView(vm: vm, width: geo.size.width, height: geo.size.height, showRandomCharacterInfo: $showRandomCharacterInfo)
+                            
+                        
+                        case .notFoundRandomCharacter:
+                            Text("Please try again!")
+                                .foregroundStyle(.white)
+                                .font(.largeTitle)
+                            
                         case .failed(let error):
                             Text(error.localizedDescription)
                         }
                         
                         
-                        Spacer()
+                        Spacer(minLength: 20)
                     }
                     
-                    Button{
-                        Task{
-                            await vm.getQuoteData(for: show)
+                    VStack {
+                        Button{
+                            Task{
+                                await vm.getQuoteData(for: show)
+                            }
+                        } label:{
+                            Text("Get Random Quote")
+                                .font(.subheadline)
+                                .foregroundStyle(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color("\(show.removeSpaces())Button"))
+                                .clipShape(.rect(cornerRadius: 7))
+                                .shadow(color: Color("\(show.removeSpaces())Shadow"), radius: 2)
                         }
-                    } label:{
-                        Text("Get Random Quote")
-                            .font(.title)
-                            .foregroundStyle(.white)
-                            .padding()
-                            .background(Color("\(show.removeSpaces())Button"))
-                            .clipShape(.rect(cornerRadius: 7))
-                            .shadow(color: Color("\(show.removeSpaces())Shadow"), radius: 2)
+                        
+                        Button{
+                            Task{
+                                await vm.getEpisode(for: show)
+                            }
+                        } label:{
+                            Text("Get Random Episode")
+                                .font(.subheadline)
+                                .foregroundStyle(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color("\(show.removeSpaces())Button"))
+                                .clipShape(.rect(cornerRadius: 7))
+                                .shadow(color: Color("\(show.removeSpaces())Shadow"), radius: 2)
+                                
+                        }
+                        
+                        Button{
+                            Task{
+                                await vm.getRandomCharacter(for: show)
+                            }
+                        } label:{
+                            Text("Get Random Character")
+                                .font(.subheadline)
+                                .foregroundStyle(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color("\(show.removeSpaces())Button"))
+                                .clipShape(.rect(cornerRadius: 7))
+                                .shadow(color: Color("\(show.removeSpaces())Shadow"), radius: 2)
+                                
+                        }
                     }
+                    .padding(.horizontal)
+                    
                     
                     Spacer(minLength: 95)
                 }
@@ -91,12 +115,20 @@ struct FetchView: View {
         }
         .ignoresSafeArea()
         .sheet(isPresented: $showCharacterInfo) {
-            CharacterView(character: vm.character, show: show)
+            CharacterDetailView(character: vm.character, show: show, vm: vm)
+        }
+        .sheet(isPresented: $showRandomCharacterInfo, content: {
+            CharacterDetailView(character: vm.randomCharacter, show: show, vm: vm)
+        })
+        .onAppear{
+            Task{
+                await vm.getQuoteData(for: show)
+            }
         }
     }
 }
 
 #Preview {
-    FetchView(show: Constants.ecName)
+    FetchView(show: Constants.bbName)
         .preferredColorScheme(.dark)
 }

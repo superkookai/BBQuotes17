@@ -15,3 +15,13 @@ struct BBQuotes17App: App {
         }
     }
 }
+
+/**
+ Version 2 Feature List
+ ✅ Add El Camino tab
+ ✅ Utilize all character images on CharacterView
+ ✅ On CharacterView, auto-scroll to bottom after status is shown
+ - Fecth episode data
+ ✅  Extend String to get rid of long Image/Color name
+ ✅  Create static constants for show name
+ */

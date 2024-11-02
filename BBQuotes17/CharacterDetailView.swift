@@ -10,6 +10,9 @@ import SwiftUI
 struct CharacterDetailView: View {
     let character: Character
     let show: String
+    let vm: ViewModel
+    
+    @State private var showRandomQuote = false
     
     var body: some View {
         GeometryReader{ geo in
@@ -37,11 +40,29 @@ struct CharacterDetailView: View {
                         .padding(.top,60)
                         
                         VStack(alignment: .leading) {
-                            Text(character.name)
-                                .font(.largeTitle)
-                            
-                            Text("Portrayed By: \(character.portrayedBy)")
-                                .font(.subheadline)
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(character.name)
+                                        .font(.largeTitle)
+                                    Text("Portrayed By: \(character.portrayedBy)")
+                                        .font(.subheadline)
+                                }
+                                
+                                Spacer()
+                                
+                                Button {
+                                    Task{
+                                        await vm.getRandomQuote(from: character.name)
+                                    }
+                                    showRandomQuote.toggle()
+                                } label: {
+                                    Text("Get\nRandom\nQuote")
+                                        .tint(.primary)
+                                        .padding()
+                                        .background(.gray.opacity(0.5))
+                                        .clipShape(.rect(cornerRadius: 25))
+                                }
+                            }
                             
                             Divider()
                             
@@ -113,9 +134,21 @@ struct CharacterDetailView: View {
             }
         }
         .ignoresSafeArea()
+        .sheet(isPresented: $showRandomQuote) {
+            VStack {
+                Text("\(character.name)'s quote: ")
+                    .font(.title3)
+                Text(vm.randomQuote.quote)
+                    .font(.title)
+                    .presentationDetents([.medium])
+            }
+            .padding()
+            .background(.gray.opacity(0.5))
+            .clipShape(.rect(cornerRadius: 10))
+        }
     }
 }
 
 #Preview {
-    CharacterDetailView(character: ViewModel().character, show: Constants.bbName)
+    CharacterDetailView(character: ViewModel().character, show: Constants.bbName, vm: ViewModel())
 }
