@@ -17,6 +17,7 @@ class ViewModel{
         case successRandomCharacter
         case notFoundRandomCharacter
         case failed(error: Error)
+        case successSSQuote
     }
     
     private(set) var status: FetchStatus = .notStarted
@@ -28,6 +29,9 @@ class ViewModel{
     var episode: Episode
     var randomCharacter: Character
     var randomQuote: Quote
+    var ssQuote: SSQuote
+    
+    var quoteCounts = 0
     
     init(){
         //For mock data (from sample JSON file)
@@ -45,10 +49,15 @@ class ViewModel{
         
         randomCharacter = try! decoder.decode(Character.self, from: characterData)
         randomQuote = try! decoder.decode(Quote.self, from: quoteData)
+        
+        let ssQuoteData = try! Data(contentsOf: Bundle.main.url(forResource: "samplesimpsonquote", withExtension: "json")!)
+        let ssQuotes = try! decoder.decode([SSQuote].self, from: ssQuoteData)
+        ssQuote = ssQuotes[0]
     }
     
     //Get real data from this function
     func getQuoteData(for show: String) async {
+        quoteCounts += 1
         status = .fetching
         
         do{
@@ -100,5 +109,16 @@ class ViewModel{
         }catch{
             status = .failed(error: error)
         }
+    }
+    
+    func getSSQuote() async{
+        status = .fetching
+        do{
+            ssQuote = try await fetcher.fetchSSQuote()
+            status = .successSSQuote
+        }catch{
+            status = .failed(error: error)
+        }
+            
     }
 }

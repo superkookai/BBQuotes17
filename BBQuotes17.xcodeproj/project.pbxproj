@@ -19,6 +19,9 @@
 		BF2DDDAB2CD2222F003B97C4 /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2DDDAA2CD2222F003B97C4 /* Quote.swift */; };
 		BF2DDDAD2CD222E1003B97C4 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2DDDAC2CD222E1003B97C4 /* Character.swift */; };
 		BF2DDDAF2CD22400003B97C4 /* Death.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2DDDAE2CD22400003B97C4 /* Death.swift */; };
+		BF3BF6932CD745490081A2C0 /* samplesimpsonquote.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3BF6922CD745340081A2C0 /* samplesimpsonquote.json */; };
+		BF3BF6952CD745980081A2C0 /* SSQuote.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3BF6942CD745980081A2C0 /* SSQuote.swift */; };
+		BF3BF6972CD74BE50081A2C0 /* SSQuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3BF6962CD74BE50081A2C0 /* SSQuoteView.swift */; };
 		BFCF0BE82CD49BC700C8EF51 /* CharacterDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCF0BE72CD49BC700C8EF51 /* CharacterDetailView.swift */; };
 		BFCF0BEA2CD4ACE400C8EF51 /* sampleepisode.json in Resources */ = {isa = PBXBuildFile; fileRef = BFCF0BE92CD4ACE400C8EF51 /* sampleepisode.json */; };
 		BFCF0BEC2CD4B65200C8EF51 /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCF0BEB2CD4B65200C8EF51 /* StringExt.swift */; };
@@ -44,6 +47,9 @@
 		BF2DDDAA2CD2222F003B97C4 /* Quote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
 		BF2DDDAC2CD222E1003B97C4 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		BF2DDDAE2CD22400003B97C4 /* Death.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Death.swift; sourceTree = "<group>"; };
+		BF3BF6922CD745340081A2C0 /* samplesimpsonquote.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = samplesimpsonquote.json; sourceTree = "<group>"; };
+		BF3BF6942CD745980081A2C0 /* SSQuote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSQuote.swift; sourceTree = "<group>"; };
+		BF3BF6962CD74BE50081A2C0 /* SSQuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSQuoteView.swift; sourceTree = "<group>"; };
 		BFCF0BE72CD49BC700C8EF51 /* CharacterDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailView.swift; sourceTree = "<group>"; };
 		BFCF0BE92CD4ACE400C8EF51 /* sampleepisode.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sampleepisode.json; sourceTree = "<group>"; };
 		BFCF0BEB2CD4B65200C8EF51 /* StringExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
@@ -102,12 +108,14 @@
 				BFCF0BF12CD4C61500C8EF51 /* EpisodeView.swift */,
 				BFCF0BE72CD49BC700C8EF51 /* CharacterDetailView.swift */,
 				BF06CBB82CD60CCF00307AA9 /* RandomCharacterView.swift */,
+				BF3BF6962CD74BE50081A2C0 /* SSQuoteView.swift */,
 				BFDA10602CD33A50005B61A2 /* ViewModel.swift */,
 				BFDA105E2CD32A11005B61A2 /* FetchService.swift */,
 				BF2DDDAA2CD2222F003B97C4 /* Quote.swift */,
 				BF2DDDAC2CD222E1003B97C4 /* Character.swift */,
 				BF2DDDAE2CD22400003B97C4 /* Death.swift */,
 				BFCF0BEF2CD4BB3200C8EF51 /* Episode.swift */,
+				BF3BF6942CD745980081A2C0 /* SSQuote.swift */,
 				BFCF0BEB2CD4B65200C8EF51 /* StringExt.swift */,
 				BFCF0BED2CD4B87100C8EF51 /* Constants.swift */,
 				BF2DDD9A2CD21C98003B97C4 /* Preview Content */,
@@ -118,6 +126,7 @@
 		BF2DDDA32CD21CAC003B97C4 /* Sample Data */ = {
 			isa = PBXGroup;
 			children = (
+				BF3BF6922CD745340081A2C0 /* samplesimpsonquote.json */,
 				BF2DDDA42CD21CD3003B97C4 /* samplecharacter.json */,
 				BF2DDDA52CD21CD3003B97C4 /* sampledeath.json */,
 				BF2DDDA62CD21CD3003B97C4 /* samplequote.json */,
@@ -193,6 +202,7 @@
 				BF2DDDA82CD21CD3003B97C4 /* sampledeath.json in Resources */,
 				BF2DDDA92CD21CD3003B97C4 /* samplecharacter.json in Resources */,
 				BF2DDDA22CD21C98003B97C4 /* Assets.xcassets in Resources */,
+				BF3BF6932CD745490081A2C0 /* samplesimpsonquote.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,7 +225,9 @@
 				BF2DDDA02CD21C98003B97C4 /* ContentView.swift in Sources */,
 				BFDA105F2CD32A11005B61A2 /* FetchService.swift in Sources */,
 				BFCF0BE82CD49BC700C8EF51 /* CharacterDetailView.swift in Sources */,
+				BF3BF6952CD745980081A2C0 /* SSQuote.swift in Sources */,
 				BF06CBB72CD5ED6E00307AA9 /* QuoteView.swift in Sources */,
+				BF3BF6972CD74BE50081A2C0 /* SSQuoteView.swift in Sources */,
 				BF2DDDAD2CD222E1003B97C4 /* Character.swift in Sources */,
 				BFDA10612CD33A50005B61A2 /* ViewModel.swift in Sources */,
 			);

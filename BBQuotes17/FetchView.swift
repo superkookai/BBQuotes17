@@ -13,6 +13,7 @@ struct FetchView: View {
     
     @State private var showCharacterInfo = false
     @State private var showRandomCharacterInfo = false
+    @State private var showSSAlert = false
     
     var body: some View {
         GeometryReader{ geo in
@@ -41,12 +42,14 @@ struct FetchView: View {
                             
                         case .successRandomCharacter:
                             RandomCharacterView(vm: vm, width: geo.size.width, height: geo.size.height, showRandomCharacterInfo: $showRandomCharacterInfo)
-                            
                         
                         case .notFoundRandomCharacter:
                             Text("Please try again!")
                                 .foregroundStyle(.white)
                                 .font(.largeTitle)
+                            
+                        case .successSSQuote:
+                            SSQuoteView(vm: vm, width: geo.size.width, height: geo.size.height)
                             
                         case .failed(let error):
                             Text(error.localizedDescription)
@@ -59,7 +62,13 @@ struct FetchView: View {
                     VStack {
                         Button{
                             Task{
-                                await vm.getQuoteData(for: show)
+                                if vm.quoteCounts % 5 != 0{
+                                    await vm.getQuoteData(for: show)
+                                }else{
+                                    await vm.getSSQuote()
+                                    vm.quoteCounts = 1
+                                    showSSAlert.toggle()
+                                }
                             }
                         } label:{
                             Text("Get Random Quote")
@@ -127,6 +136,9 @@ struct FetchView: View {
             }
         } , content: {
             CharacterDetailView(character: vm.randomCharacter, show: show, vm: vm)
+        })
+        .alert("Oops! It's Simpsons!", isPresented: $showSSAlert, actions: {
+            
         })
         .onAppear{
             Task{

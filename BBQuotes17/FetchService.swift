@@ -123,4 +123,20 @@ struct FetchService{
         
         return randomQuote
     }
+    
+    func fetchSSQuote() async throws -> SSQuote{
+        let baseURL = URL(string: "https://thesimpsonsquoteapi.glitch.me")!
+        let ssQuoteURL = baseURL.appending(path: "quotes")
+        
+        let (data, response) = try await URLSession.shared.data(from: ssQuoteURL)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else{
+            throw FetchError.badResponse
+        }
+        
+        let decoder = JSONDecoder()
+        let ssQuotes = try decoder.decode([SSQuote].self, from: data)
+        
+        return ssQuotes[0]
+    }
 }
