@@ -114,10 +114,18 @@ struct FetchView: View {
             .frame(width: geo.size.width, height: geo.size.height)
         }
         .ignoresSafeArea()
-        .sheet(isPresented: $showCharacterInfo) {
+        .sheet(isPresented: $showCharacterInfo, onDismiss: {
+            Task{
+                await vm.getQuoteData(for: show)
+            }
+        }) {
             CharacterDetailView(character: vm.character, show: show, vm: vm)
         }
-        .sheet(isPresented: $showRandomCharacterInfo, content: {
+        .sheet(isPresented: $showRandomCharacterInfo, onDismiss: {
+            Task{
+                await vm.getQuoteData(for: show)
+            }
+        } , content: {
             CharacterDetailView(character: vm.randomCharacter, show: show, vm: vm)
         })
         .onAppear{
